@@ -18,7 +18,7 @@ public class OrderItem {
     private Long orderItemId;
     
     private Integer quantity;
-    private Double price;
+    private Double subPrice;
 
     @ManyToOne
     @JsonIgnoreProperties("orderItems")
@@ -33,14 +33,18 @@ public class OrderItem {
     	
     }
 
-	public OrderItem(Long orderItemId, Integer quantity, Double price, Order order, Product product) {
+	public OrderItem(Long orderItemId, Integer quantity, Double subPrice, Order order, Product product) {
 		super();
 		this.orderItemId = orderItemId;
 		this.quantity = quantity;
-		this.price = price;
+		this.subPrice = subPrice;
 		this.order = order;
 		this.product = product;
 	}
+	
+	  public void calculateSubtotal() {
+	        subPrice = quantity * product.getPrice();
+	    }
 
 	public Long getOrderItemId() {
 		return orderItemId;
@@ -58,12 +62,12 @@ public class OrderItem {
 		this.quantity = quantity;
 	}
 
-	public Double getPrice() {
-		return price;
+	public Double getSubPrice() {
+		return subPrice;
 	}
 
-	public void setPrice(Double price) {
-		this.price = price;
+	public void setSubPrice(Double subPrice) {
+		this.subPrice = subPrice;
 	}
 
 	public Order getOrder() {

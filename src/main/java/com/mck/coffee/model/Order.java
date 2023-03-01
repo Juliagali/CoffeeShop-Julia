@@ -2,7 +2,6 @@ package com.mck.coffee.model;
 
 import java.util.List;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mck.coffee.model.enums.OrderStatus;
 
@@ -88,6 +87,10 @@ public class Order {
 
 	public void setOrderItems(List<OrderItem> items) {
 		this.orderItems = items;
+	}
+
+	public void updateTotalPrice() {
+		totalPrice = orderItems.stream().mapToDouble(OrderItem::getSubPrice).sum();
 	}
 
 }
