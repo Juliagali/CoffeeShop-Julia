@@ -21,22 +21,27 @@ public class Payment implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Instant moment;
-	
+	private String paymentMethod;
+
 	@JsonIgnore
 	@OneToOne
 	@MapsId
 	private Order order;
-	
+
+	private double amount;
+
 	public Payment() {
-		
+
 	}
 
-	public Payment(Long id, Instant moment, Order order) {
+	public Payment(Long id , Order order, String paymentMethod) {
 		super();
 		this.id = id;
-		this.moment = moment;
 		this.order = order;
+		this.paymentMethod = paymentMethod;
+		if (order != null) {
+			this.amount = calculateAmount();
+		}
 	}
 
 	public Long getId() {
@@ -47,13 +52,7 @@ public class Payment implements Serializable {
 		this.id = id;
 	}
 
-	public Instant getMoment() {
-		return moment;
-	}
 
-	public void setMoment(Instant moment) {
-		this.moment = moment;
-	}
 
 	public Order getOrder() {
 		return order;
@@ -62,5 +61,24 @@ public class Payment implements Serializable {
 	public void setOrder(Order order) {
 		this.order = order;
 	}
-	
+
+	public String getPaymentType() {
+		return paymentMethod;
+	}
+
+	public void setPaymentType(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
+	private double calculateAmount() {
+		if (this.order != null) {
+			double totalPrice = this.order.getTotalPrice();
+			if (this.paymentMethod.equals("creditCard")) {
+				return totalPrice * 10.02;
+			} else {
+				return totalPrice;
+			}
+		}
+		return 0;
+	}
 }

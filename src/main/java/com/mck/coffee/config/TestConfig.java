@@ -67,8 +67,9 @@ public class TestConfig implements CommandLineRunner {
 		OrderItem orderItem1 = new OrderItem(1L, 2, null, null, product1);
 		orderItem1.calculateSubtotal();
 
-		Payment payment1 = new Payment(null, Instant.now(), null);
+		Payment payment1 = new Payment(null, null, "creditCard");
 
+		
 		Order order1 = new Order(null, OrderStatus.SHIPPED, payment1, 999.98,
 				new ArrayList<>(Collections.singletonList(orderItem1)));
 		order1.updateTotalPrice();
