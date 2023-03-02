@@ -79,6 +79,22 @@ public class OrderService {
 	    return order;
 	}
 
+	public void deleteOrderItem(Long orderId, Long productId) {
+	    Order order = orderRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException("Order not found"));
+	    Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("Product not found"));
+
+	    if (!orderItemRepository.existsByOrderAndProduct(order, product)) {
+	        throw new EntityNotFoundException("Order item not found");
+	    }
+
+	    OrderItem orderItem = orderItemRepository.findByOrderAndProduct(order, product);
+	    orderItemRepository.delete(orderItem);
+
+	    double totalPrice = order.getOrderItems().stream().mapToDouble(OrderItem::getSubPrice).sum();
+	    order.setTotalPrice(totalPrice);
+
+	    orderRepository.save(order);
+	}
 
 
 
