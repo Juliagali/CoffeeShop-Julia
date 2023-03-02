@@ -11,6 +11,8 @@ import com.mck.coffee.model.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+	List<Product> findAllByNameContainingIgnoreCase(String name);
+
 	
 
 }
